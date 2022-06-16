@@ -1,10 +1,8 @@
-﻿using Reagentes.Models;
-
-namespace Reagentes
+﻿namespace Reagentes
 {
     public static class IdentityDataInitializer
     {
-        public static void seedRoles(RoleManager<IdentityRole> roleManager, string rolename)
+        public static void SeedRoles(RoleManager<IdentityRole> roleManager, string rolename)
         {
             if(!roleManager.RoleExistsAsync(rolename).Result)
             {
@@ -22,7 +20,7 @@ namespace Reagentes
             }
         }
 
-        public static void seedUsers(UserManager<IdentityUser> userManager, DataContext context, string 用户名, string 名字, 
+        public static void SeedUsers(UserManager<IdentityUser> userManager, DataContext context, string 用户名, string 名字, 
             string 电话号码, string 密码, string 角色, string 邮件)
         {
             if(userManager.FindByNameAsync(用户名).Result == null)

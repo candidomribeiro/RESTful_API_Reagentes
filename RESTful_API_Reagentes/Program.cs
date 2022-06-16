@@ -94,8 +94,11 @@ builder.Services.AddSwaggerGen(options =>
 
 WebApplication app = builder.Build();
 
-app.UseDeveloperExceptionPage();
+IWebHostEnvironment env = builder.Environment;
 
+if(env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
+app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors();
@@ -139,8 +142,8 @@ using (var scope = app.Services.CreateScope())
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var dataContext = serviceProvider.GetRequiredService<DataContext>();
 
-        Reagentes.IdentityDataInitializer.seedRoles(roleManager, 角色);
-        Reagentes.IdentityDataInitializer.seedUsers(userManager, dataContext, 用户名, 名字, 电话号码, 密码, 角色, 邮件);
+        Reagentes.IdentityDataInitializer.SeedRoles(roleManager, 角色);
+        Reagentes.IdentityDataInitializer.SeedUsers(userManager, dataContext, 用户名, 名字, 电话号码, 密码, 角色, 邮件);
     }
     catch (Exception e)
     {
