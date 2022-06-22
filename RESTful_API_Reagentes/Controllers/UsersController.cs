@@ -111,24 +111,28 @@ namespace Reagentes.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> OnPostAsync([FromBody] 用户信息 消息)
         {
-            IdentityUser user = new();
-            user.UserName = 消息.用户名;
-            user.Email = 消息.邮件;
-            user.PhoneNumber = 消息.电话号码;
+            IdentityUser user = new()
+            {
+                UserName = 消息.用户名,
+                Email = 消息.邮件,
+                PhoneNumber = 消息.电话号码
+            };
 
             if (ModelState.IsValid)
             {
                 try { await UserManager.CreateAsync(user, 消息.密码); }
                 catch (Exception e) { return BadRequest("UserManager.CreateAsync(user, userinfo.Password); 失败 !! " + e.Message); }
 
-                试剂用户模型 用户 = new();
-                用户.用户名 = 消息.用户名;
-                用户.工号 = 消息.工号;
-                用户.名字 = 消息.名字;
-                用户.身份证号 = 消息.身份证号;
-                用户.邮件 = 消息.邮件;
-                用户.电话号码 = 消息.电话号码;
-                用户.注册日期 = DateTime.Now;
+                试剂用户模型 用户 = new()
+                {
+                    用户名 = 消息.用户名,
+                    工号 = 消息.工号,
+                    名字 = 消息.名字,
+                    身份证号 = 消息.身份证号,
+                    邮件 = 消息.邮件,
+                    电话号码 = 消息.电话号码,
+                    注册日期 = DateTime.Now
+                };
 
                 try
                 {
@@ -204,8 +208,10 @@ namespace Reagentes.Controllers
             IdentityUser user = await UserManager.FindByNameAsync(用户.用户名);
             try
             {
-                List<string> role = new(1); 
-                role.Add(用户.角色);
+                List<string> role = new(1)
+                {
+                    用户.角色
+                };
                 await UserManager.AddToRolesAsync(user, role);
                 await UserManager.UpdateAsync(user);
             }
@@ -228,8 +234,10 @@ namespace Reagentes.Controllers
             IdentityUser user = await UserManager.FindByNameAsync(用户.用户名);
             try
             {
-                List<string> role = new(1);
-                role.Add(用户.角色);
+                List<string> role = new(1)
+                {
+                    用户.角色
+                };
                 await UserManager.RemoveFromRolesAsync(user, role);
                 await UserManager.UpdateAsync(user);
             }
@@ -247,8 +255,10 @@ namespace Reagentes.Controllers
         [Authorize(Roles = "管理")]
         public async Task<IActionResult> OnPostAsyncDel([FromBody] 用户删除 用户)
         {
-            IdentityUser user = new();
-            user.UserName = 用户.用户名;
+            IdentityUser user = new()
+            {
+                UserName = 用户.用户名
+            };
 
             user = await UserManager.FindByNameAsync(user.UserName);
             if (user != null)

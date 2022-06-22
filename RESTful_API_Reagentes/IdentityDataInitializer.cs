@@ -2,20 +2,23 @@
 {
     public static class IdentityDataInitializer
     {
-        public static void SeedRoles(RoleManager<IdentityRole> roleManager, string rolename)
+        public static void SeedRoles(RoleManager<IdentityRole> roleManager, string [] rolelist)
         {
-            if(!roleManager.RoleExistsAsync(rolename).Result)
+            foreach (string rolename in rolelist)
             {
-                IdentityRole role = new()
+                if (!roleManager.RoleExistsAsync(rolename).Result)
                 {
-                    Name = rolename
-                };
+                    IdentityRole role = new()
+                    {
+                        Name = rolename
+                    };
 
-                IdentityResult result = roleManager.CreateAsync(role).Result;
+                    IdentityResult result = roleManager.CreateAsync(role).Result;
 
-                if(!result.Succeeded)
-                {
-                    System.Diagnostics.Debug.WriteLine(result.ToString());
+                    if (!result.Succeeded)
+                    {
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
+                    }
                 }
             }
         }

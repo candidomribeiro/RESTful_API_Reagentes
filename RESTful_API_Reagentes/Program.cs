@@ -96,9 +96,15 @@ WebApplication app = builder.Build();
 
 IWebHostEnvironment env = builder.Environment;
 
-if(env.IsDevelopment()) app.UseDeveloperExceptionPage();
+if (env.IsDevelopment())
+{ 
+    app.UseDeveloperExceptionPage(); 
+}
+else if (env.IsProduction())
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseCors();
@@ -126,6 +132,7 @@ app.UseSwaggerUI(options =>
 
 
 // Seed Users and Roles data in ASP.NET Core Identity
+string[] 角色目录 = Configuration.GetSection("角色目录:角色").Get<List<string>>().ToArray();
 string 用户名 = Configuration.GetSection("大师:用户名").Value;
 string 名字 = Configuration.GetSection("大师:名字").Value;
 string 密码 = Configuration.GetSection("大师:密码").Value;
@@ -142,7 +149,7 @@ using (var scope = app.Services.CreateScope())
         var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
         var dataContext = serviceProvider.GetRequiredService<DataContext>();
 
-        Reagentes.IdentityDataInitializer.SeedRoles(roleManager, 角色);
+        Reagentes.IdentityDataInitializer.SeedRoles(roleManager, 角色目录);
         Reagentes.IdentityDataInitializer.SeedUsers(userManager, dataContext, 用户名, 名字, 电话号码, 密码, 角色, 邮件);
     }
     catch (Exception e)
