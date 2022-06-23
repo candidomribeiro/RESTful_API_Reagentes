@@ -36,7 +36,7 @@ namespace Reagentes.Controllers
             await Context.产品操作记录.FromSqlInterpolated($"select 瓶号, 试剂名称, 试剂类别, 用户名, datediff(归期, 出发日期) + 1 as 时间 from reagentes.视野试剂输入输出 where 出发日期 > {DateTime.Parse(间.开始日期)} and 归期 < {DateTime.Parse(间.结束日期)}").ToListAsync<产品操作记录模型>();
 
         [HttpGet]
-        public IAsyncEnumerable<视野试剂输入输出模型> 入出() => Context.视野试剂输入输出;
+        public IAsyncEnumerable<视野试剂输入输出模型> 入出() => (IAsyncEnumerable<视野试剂输入输出模型>)Context.视野试剂输入输出;
 
         [HttpPost("acquisitions")]
         public async Task<List<试剂采购频率模型>> 试剂采购([FromBody] 时间 间) =>
